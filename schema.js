@@ -31,13 +31,19 @@ const Query = new GraphQLObjectType({
                  return axios.get('https://api.spacexdata.com/v3/launches/').then(res=> res.data);
             }
         },
-        launch : {
-            type : LaunchType,
+        rockets : {
+            type : new GraphQLList(RocketType),
+            resolve(parent, args) {
+                 return axios.get('https://api.spacexdata.com/v3/rockets/').then(res=> res.data);
+            }
+        },
+        rocket : {
+            type : RocketType,
             args: {
-                flight_number : {type: GraphQLInt}
+                id : {type: GraphQLInt}
             },
             resolve(parent, args) {
-                return axios.get(`https://api.spacexdata.com/v3/launches/${args.flight_number}`).then(res=> res.data);
+                return axios.get(`https://api.spacexdata.com/v3/launches/${args.id}`).then(res=> res.data);
            }
         }
     }
